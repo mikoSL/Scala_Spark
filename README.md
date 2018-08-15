@@ -1,6 +1,5 @@
 # Scala_Spark_Course
 
-## Files are from www.sundog-eduction.com.
 ## Course "Apache Spark 2.0 with Scala- Hands on with Big Data" by Frank Kane.
 
 ### Scala
@@ -20,7 +19,7 @@ accumulator
 
 ### Packaging and deploying scala spark driver scripts to cluster
 ```
-spark-submit 
+spark-submit
  --class <class object that contains your main function>
  --jars <path to any dependencies>
  --files <files you want placed alongside your application>
