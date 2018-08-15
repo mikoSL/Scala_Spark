@@ -54,28 +54,54 @@ sbt assembly
 .lookup()
 ```
 * Best Practice using Cluster
-1. Use an empty, default SparkConf in the your driver
+ 1. Use an empty, default SparkConf in the your driver
    -- this way, we will use the default EMR sets up instead,
    as well as any command-line options you pass into spark-submit from your master node.
-2. If executors start failing, may need to adjust memory each executor has. e.g.
+ 2. If executors start failing, may need to adjust memory each executor has. e.g.
 ```
 spark-submit --executor-memory 1g MovieSimilarities1M.py 260
 ```
-3. Can use -master yarn to run on a YARN cluster.(EMR sets it for you)
-4. Get scripts & data someplace where EMR can access easily(e.g s3 link s3n://xxx)
-5. Spin up EMR cluster for Spark using AWS console to reduce billing.
-6. Get external DNS name for master node, and log into it using hadoop user account and private key file.
-7. Copy driver program's JAR file and any files it needs.(e.g. save in s3).
-8. Run spark-submit and watch output!
-9. Terminate cluster when tasks are done!
+ 3. Can use -master yarn to run on a YARN cluster.(EMR sets it for you)
+ 4. Get scripts & data someplace where EMR can access easily(e.g s3 link s3n://xxx)
+ 5. Spin up EMR cluster for Spark using AWS console to reduce billing.
+ 6. Get external DNS name for master node, and log into it using hadoop user account and private key file.
+ 7. Copy driver program's JAR file and any files it needs.(e.g. save in s3).
+ 8. Run spark-submit and watch output!
+ 9. Terminate cluster when tasks are done!
 
 
 #### SparkSQL/ DataFrame / DataSets
+```
+SparkSession
+```
+
+* some example methods
+```
+.show()
+.select()
+.filter()
+.groupBy()
+.map()
+```
+* Shell access
+ 1. SparkSQL exposes a JDBC/ODBC server(if you built Spark with Hive support)
+ 2. Start with
+ ```
+sbin/start-shriftserver.sh
+ ```
+ 3. Connect using bin/beeline -u jdbc:hive2://localhost:10000
+
+* create new tables or query existing ones that were cached using
+```
+hiveCtx.cacheTable("tableName")
+```
+* REMEMBER to import spark.implicits._ when convert RDD toDS.
+
 #### MLLib
 #### Spark Streaming
 #### GraphX
 
-#### Troubleshooting and managing dependencies
+#### Troubleshooting
 * Spark UI (good monitor tool). After spark-submit, go to http://127.0.0.1:4040
 * If in AWS EMR, save logging in s3 and check them.
 * In Yarn, collecting logging is needed because they are distributed.
@@ -83,10 +109,18 @@ spark-submit --executor-memory 1g MovieSimilarities1M.py 260
 yarn logs -applicationID <app ID>
 ```
 * While driver scripts runs, it will log errros like executors failing to issues heartbeats. Then the following action may need:
-1. too much load for each executor.
-2. need more machines in your cluster.
-3. executor needs more memory.
-4. use partitionBy() to demand less work from individual executor by using smaller partitions.
+ 1. too much load for each executor.
+ 2. need more machines in your cluster.
+ 3. executor needs more memory.
+ 4. use partitionBy() to demand less work from individual executor by using smaller partitions.
+
+#### Managing dependencies
+* executors are not necessarily on the same box as the driver scripts.
+* use broadcast variables to share data outsides of RDD's.
+* If need some java or scala package that is not pre-loaded on EMR,then:
+ 1. bundle them into JAR with sbt assembly.
+ 2. use --jars with spark-submit to add individual libraries that are on master.
+ 3. avoid using obscure packages you do not need in the first place.
 
 ### Methods used in the course:
 ```
