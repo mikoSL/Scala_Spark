@@ -1,4 +1,4 @@
-# Scala_Spark_Course
+# Scala_Spark
 
 ## Course "Apache Spark 2.0 with Scala- Hands on with Big Data" by Frank Kane.
 
@@ -9,11 +9,11 @@ SparkConf
 .broadcast()
 accumulator
 ```
-#### apply Breadth-First Search(BFS) in spark
-#### item-based collaborative filtering (cache(), persist())
+#### Apply Breadth-First Search(BFS) in spark
+#### Item-based collaborative filtering (cache(), persist())
 
 #### Spark Cluster & AWS EMR(Elastic MapReducer)
-#### Packaging and deploying scala spark driver scripts to cluster
+##### Packaging and deploying scala spark driver scripts to cluster
 * spark-submit
 ```
 spark-submit
@@ -37,7 +37,7 @@ spark-submit --class main.scala.com.sundogsoftware.spark.MovieSimilarities Movie
 ```
 sbt assembly
 ```
-#### Partition
+##### Partition
 ```
 .partitionBy()
 ```
@@ -61,11 +61,32 @@ sbt assembly
 ```
 spark-submit --executor-memory 1g MovieSimilarities1M.py 260
 ```
+3. Can use -master yarn to run on a YARN cluster.(EMR sets it for you)
+4. Get scripts & data someplace where EMR can access easily(e.g s3 link s3n://xxx)
+5. Spin up EMR cluster for Spark using AWS console to reduce billing.
+6. Get external DNS name for master node, and log into it using hadoop user account and private key file.
+7. Copy driver program's JAR file and any files it needs.(e.g. save in s3).
+8. Run spark-submit and watch output!
+9. Terminate cluster when tasks are done!
+
+
 #### SparkSQL/ DataFrame / DataSets
 #### MLLib
 #### Spark Streaming
 #### GraphX
 
+#### Troubleshooting and managing dependencies
+* Spark UI (good monitor tool). After spark-submit, go to http://127.0.0.1:4040
+* If in AWS EMR, save logging in s3 and check them.
+* In Yarn, collecting logging is needed because they are distributed.
+```
+yarn logs -applicationID <app ID>
+```
+* While driver scripts runs, it will log errros like executors failing to issues heartbeats. Then the following action may need:
+1. too much load for each executor.
+2. need more machines in your cluster.
+3. executor needs more memory.
+4. use partitionBy() to demand less work from individual executor by using smaller partitions.
 
 ### Methods used in the course:
 ```
