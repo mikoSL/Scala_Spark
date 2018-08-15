@@ -29,7 +29,7 @@ spark-submit
 ```
 spark-submit --class main.scala.com.sundogsoftware.spark.MovieSimilarities MovieSimilarities.jar 50
 ```
-* sbt in the target/scala-2.x
+* sbt (jar file is in the target/scala-2.x)
 ```
 sbt assembly
 ```
