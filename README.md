@@ -11,16 +11,25 @@ accumulator
 ```
 * apply Breadth-First Search(BFS) in spark
 * item-based collaborative filtering (cache(), persist())
-* export files to jar file
-```
-spark-submit --class main.scala.com.sundogsoftware.spark.MovieSimilarities MovieSimilarities.jar 50
-```
+
 * Spark Cluster
 * SparkSQL/ DataFrame / DataSets
 * MLLib
 * Spark Streaming
 * GraphX
-* Methods used in the course:
+
+### Packaging and deploying scala spark driver scripts to cluster
+```
+spark-submit 
+ --class <class object that contains your main function>
+ --jars <path to any dependencies>
+ --files <files you want placed alongside your application>
+ <your JAR file>
+```
+```
+spark-submit --class main.scala.com.sundogsoftware.spark.MovieSimilarities MovieSimilarities.jar 50
+```
+### Methods used in the course:
 ```
 .collect()
 ```
