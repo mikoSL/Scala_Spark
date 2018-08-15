@@ -18,6 +18,7 @@ accumulator
 * GraphX
 
 ### Packaging and deploying scala spark driver scripts to cluster
+* spark-submit
 ```
 spark-submit
  --class <class object that contains your main function>
@@ -27,6 +28,10 @@ spark-submit
 ```
 ```
 spark-submit --class main.scala.com.sundogsoftware.spark.MovieSimilarities MovieSimilarities.jar 50
+```
+* sbt in the target/scala-2.x
+```
+sbt assembly
 ```
 ### Methods used in the course:
 ```
